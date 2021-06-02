@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DbIsTakipModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="District" Relationship="Self.FK_District_City" FromRole="City" ToRole="District" />
+    <NavigationProperty Name="Companies" Relationship="Self.FK_Firmalar_Il" FromRole="City" ToRole="Companies" />
+  </EntityType>
+  <EntityType Name="Companies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Competent" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SectorId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+    <Property Name="DistrictId" Type="Int32" />
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="City" Relationship="Self.FK_Firmalar_Il" FromRole="Companies" ToRole="City" />
+    <NavigationProperty Name="District" Relationship="Self.FK_Firmalar_Ilce" FromRole="Companies" ToRole="District" />
+    <NavigationProperty Name="Sector" Relationship="Self.FK_Firmalar_Sektor" FromRole="Companies" ToRole="Sector" />
+  </EntityType>
+  <EntityType Name="Departments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Personel_Departmanlar" FromRole="Departments" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="District">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CityId" Type="Int32" />
+    <NavigationProperty Name="City" Relationship="Self.FK_District_City" FromRole="District" ToRole="City" />
+    <NavigationProperty Name="Companies" Relationship="Self.FK_Firmalar_Ilce" FromRole="District" ToRole="Companies" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Surname" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DepartmentId" Type="Int32" />
+    <Property Name="Status" Type="Boolean" />
+    <NavigationProperty Name="Departments" Relationship="Self.FK_Personel_Departmanlar" FromRole="Employee" ToRole="Departments" />
+    <NavigationProperty Name="Tasks" Relationship="Self.FK_Gorevler_Personel" FromRole="Employee" ToRole="Tasks" />
+    <NavigationProperty Name="Tasks1" Relationship="Self.FK_Gorevler_Personel1" FromRole="Employee" ToRole="Tasks" />
+  </EntityType>
+  <EntityType Name="Sector">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Companies" Relationship="Self.FK_Firmalar_Sektor" FromRole="Sector" ToRole="Companies" />
+  </EntityType>
+  <EntityType Name="TaskDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TaskId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="Hour" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="Tasks" Relationship="Self.FK_GorevDetaylar_Gorevler" FromRole="TaskDetail" ToRole="Tasks" />
+  </EntityType>
+  <EntityType Name="Tasks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AssignorId" Type="Int32" />
+    <Property Name="InChargeId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Gorevler_Personel" FromRole="Tasks" ToRole="Employee" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Gorevler_Personel1" FromRole="Tasks" ToRole="Employee" />
+    <NavigationProperty Name="TaskDetail" Relationship="Self.FK_GorevDetaylar_Gorevler" FromRole="Tasks" ToRole="TaskDetail" />
+  </EntityType>
+  <Association Name="FK_District_City">
+    <End Role="City" Type="Self.City" Multiplicity="0..1" />
+    <End Role="District" Type="Self.District" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="District">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Firmalar_Il">
+    <End Role="City" Type="Self.City" Multiplicity="0..1" />
+    <End Role="Companies" Type="Self.Companies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Companies">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Firmalar_Ilce">
+    <End Role="District" Type="Self.District" Multiplicity="0..1" />
+    <End Role="Companies" Type="Self.Companies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="District">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Companies">
+        <PropertyRef Name="DistrictId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Firmalar_Sektor">
+    <End Role="Sector" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Companies" Type="Self.Companies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sector">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Companies">
+        <PropertyRef Name="SectorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Personel_Departmanlar">
+    <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Departments">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Gorevler_Personel">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Tasks">
+        <PropertyRef Name="AssignorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Gorevler_Personel1">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Tasks">
+        <PropertyRef Name="InChargeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GorevDetaylar_Gorevler">
+    <End Role="Tasks" Type="Self.Tasks" Multiplicity="0..1" />
+    <End Role="TaskDetail" Type="Self.TaskDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tasks">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TaskDetail">
+        <PropertyRef Name="TaskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DbIsTakipEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admin" EntityType="Self.Admin" />
+    <EntitySet Name="City" EntityType="Self.City" />
+    <EntitySet Name="Companies" EntityType="Self.Companies" />
+    <EntitySet Name="Departments" EntityType="Self.Departments" />
+    <EntitySet Name="District" EntityType="Self.District" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" />
+    <EntitySet Name="Sector" EntityType="Self.Sector" />
+    <EntitySet Name="TaskDetail" EntityType="Self.TaskDetail" />
+    <EntitySet Name="Tasks" EntityType="Self.Tasks" />
+    <AssociationSet Name="FK_District_City" Association="Self.FK_District_City">
+      <End Role="City" EntitySet="City" />
+      <End Role="District" EntitySet="District" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Firmalar_Il" Association="Self.FK_Firmalar_Il">
+      <End Role="City" EntitySet="City" />
+      <End Role="Companies" EntitySet="Companies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Firmalar_Ilce" Association="Self.FK_Firmalar_Ilce">
+      <End Role="District" EntitySet="District" />
+      <End Role="Companies" EntitySet="Companies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Firmalar_Sektor" Association="Self.FK_Firmalar_Sektor">
+      <End Role="Sector" EntitySet="Sector" />
+      <End Role="Companies" EntitySet="Companies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Personel_Departmanlar" Association="Self.FK_Personel_Departmanlar">
+      <End Role="Departments" EntitySet="Departments" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Gorevler_Personel" Association="Self.FK_Gorevler_Personel">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Tasks" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Gorevler_Personel1" Association="Self.FK_Gorevler_Personel1">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Tasks" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GorevDetaylar_Gorevler" Association="Self.FK_GorevDetaylar_Gorevler">
+      <End Role="Tasks" EntitySet="Tasks" />
+      <End Role="TaskDetail" EntitySet="TaskDetail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
